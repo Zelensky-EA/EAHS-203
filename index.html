@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EAHS Classroom Checkout</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #002d62; color: #fff; text-align: center; padding: 20px; }
+        .container { background: white; color: #333; max-width: 600px; margin: auto; padding: 20px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .period { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
+        .period:last-child { border: 0; }
+        .btn { background: #002d62; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; text-decoration: none; font-size: 14px; }
+        .booked { color: #cc0000; font-weight: bold; }
+        h1 { margin-bottom: 5px; }
+        p.subtitle { color: #666; margin-top: 0; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Eagle Checkout</h1>
+    <p class="subtitle">Everett Alvarez High School</p>
+    <div id="schedule">Loading schedule...</div>
+</div>
+
+<script>
+    // This is where you'd map the Bell Schedule from your image
+    const now = new Date();
+    const day = now.getDay(); // 1=Mon, 3=Wed, etc.
+    
+    const scheduleData = {
+        standard: [
+            {n: "Period 1", s: "8:45 AM", e: "9:44 AM"},
+            {n: "Period 2", s: "9:51 AM", e: "10:48 AM"},
+            {n: "Period 3", s: "10:55 AM", e: "11:52 AM"},
+            {n: "Period 4", s: "11:59 AM", e: "12:56 PM"},
+            {n: "Period 5", s: "1:43 PM", e: "2:40 PM"},
+            {n: "Period 6", s: "2:47 PM", e: "3:44 PM"}
+        ],
+        wed: [
+            {n: "Block 1", s: "9:00 AM", e: "10:46 AM"},
+            {n: "Block 3", s: "10:53 AM", e: "12:35 PM"},
+            {n: "Block 5", s: "1:22 PM", e: "3:04 PM"}
+        ],
+        thu: [
+            {n: "Block 2", s: "8:45 AM", e: "10:31 AM"},
+            {n: "Block 4", s: "10:38 AM", e: "12:20 PM"},
+            {n: "Block 6", s: "2:02 PM", e: "3:44 PM"}
+        ]
+    };
+
+    function getTodaysSchedule() {
+        if (day === 3) return scheduleData.wed;
+        if (day === 4) return scheduleData.thu;
+        if ([1, 2, 5].includes(day)) return scheduleData.standard;
+        return [];
+    }
+
+    const today = getTodaysSchedule();
+    const container = document.getElementById('schedule');
+
+    if (today.length === 0) {
+        container.innerHTML = "No classes today!";
+    } else {
+        container.innerHTML = today.map(p => `
+            <div class="period">
+                <div>
+                    <strong>${p.n}</strong><br>
+                    <small>${p.s} - ${p.e}</small>
+                </div>
+                <a href="https://calendar.google.com/calendar/u/0/r/eventedit?text=Room+Checkout+${p.n}&dates=${formatDate(p.s)}/${formatDate(p.e)}&details=Booked+via+Eagle+App" target="_blank" class="btn">Check Out</a>
+            </div>
+        `).join('');
+    }
+
+    // Helper to format times for Google Calendar Links
+    function formatDate(timeStr) {
+        const d = new Date();
+        const [time, modifier] = timeStr.split(' ');
+        let [hours, minutes] = time.split(':');
+        if (modifier === 'PM' && hours !== '12') hours = parseInt(hours) + 12;
+        if (modifier === 'AM' && hours === '12') hours = '00';
+        d.setHours(hours, minutes, 0);
+        return d.toISOString().replace(/-|:|\.\d\d\d/g, "");
+    }
+</script>
+</body>
+</html>
