@@ -1,11 +1,11 @@
-# EAHS Lab Space Checkout
+# 203 Laboratory Checkout
 
 A GitHub Pages booking site for one shared classroom lab. The front end displays only valid EAHS class periods; a Google Apps Script backend checks conflicts and writes confirmed reservations to the shared Google Calendar.
 
-## Priority rule
+## Reservation rule
 
-- AP Chemistry, AP Biology, and Anatomy & Physiology can reserve any future available slot.
-- Other courses can reserve up to 14 days ahead.
+- Reservations are presented to teachers as available up to 14 days ahead.
+- AP Chemistry, AP Biology, and Anatomy & Physiology retain extended priority access behind the scenes.
 - An existing calendar event always blocks a slot. The backend uses a lock and checks again immediately before creating an event.
 
 Change `NON_PRIORITY_DAYS` in `apps-script/Code.gs` and `nonPriorityAdvanceDays` in `config.js` if a different priority window is desired.
