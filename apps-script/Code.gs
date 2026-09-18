@@ -1,4 +1,4 @@
-const CALENDAR_ID = 'c7aef4cc773d414d0b447c1a7ad7e6c9910c8b127ef7d22cc240b472d693f7d35@group.calendar.google.com';
+const CALENDAR_ID = 'c_7aef4cc773d414d0b447c1a7ad7e6c9910c8b127ef7d22cc240b472d693f7d35@group.calendar.google.com';
 const TIME_ZONE = 'America/Los_Angeles';
 const ALLOWED_DOMAIN = 'salinasuhsd.org';
 const NON_PRIORITY_DAYS = 14;
