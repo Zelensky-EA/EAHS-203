@@ -1,0 +1,4 @@
+sku,name,category,kind,quantity,unit,location,storage,minStock,manufacturer,catalogNumber,hazard,expiration,notes
+EQ-001,Compound light microscope,Biology equipment,Reusable,24,each,409,Cabinet B,6,,,,,Enter actual counted quantity
+GL-012,Beaker low form borosilicate 250 mL,Glassware,Reusable,42,each,209,South cabinets,12,,,,,Enter actual counted quantity
+BIO-009,Pectinase,Biology supplies,Consumable,2,bottles,400's Prep,Refrigerator,1,,,,2027-06-30,Confirm expiration from package
