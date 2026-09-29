@@ -1,4 +1,3 @@
-Upload the contents of this folder to the published root of zelensky-ea/EAHS-Science.
-index.html = department home; reservations.html = existing 203 booking page; inventory.html = shared inventory redirect.
-The 203 reservation API, calendar, and booking rules are unchanged.
-The Costs & prices and inventory Home button require deploying the inventory-app changes separately; see the top-level README.md.
+Deploy the matching inventory-app changes FIRST, then upload the contents of this folder to the GitHub Pages published root.
+index.html opens the shared school-account department hub. reservations.html keeps the live Room 203 calendar and booking logic. inventory.html opens the existing inventory deployment. hub.css provides the reference-inspired navy/gold theme.
+Read the top-level README.md for the complete deployment steps and shared file links.
