@@ -1,50 +1,46 @@
-# 203 Laboratory Checkout
+# EAHS Science Department Website
 
-A GitHub Pages booking site for one shared classroom lab. The front end displays only valid EAHS class periods; a Google Apps Script backend checks conflicts and writes confirmed reservations to the shared Google Calendar.
+This package combines two working department systems behind one GitHub Pages homepage:
 
-## Reservation rule
+1. **203 Laboratory Checkout** — a GitHub Pages interface connected to the Room 203 Google Calendar through the existing Apps Script backend.
+2. **Science Department Inventory** — a Google Apps Script app backed by the Everett Alvarez Science Department Inventory Google Sheet.
 
-- Reservations are presented to teachers as available up to 14 days ahead.
-- AP Chemistry, AP Biology, and Anatomy & Physiology retain extended priority access behind the scenes.
-- An existing calendar event always blocks a slot. The backend uses a lock and checks again immediately before creating an event.
+## Repository layout
 
-Change `NON_PRIORITY_DAYS` in `apps-script/Code.gs` and `nonPriorityAdvanceDays` in `config.js` if a different priority window is desired.
+- `index.html` — department homepage
+- `lab-checkout.html` — Room 203 reservation page
+- `inventory.html` — inventory page and embedded-app wrapper
+- `app.js`, `config.js`, `styles.css` — lab checkout files
+- `site-config.js`, `portal.css` — department portal files
+- `lab-backend/` — existing Room 203 Apps Script backend
+- `inventory-app/` — inventory Apps Script files and CSV references
 
-## 1. Set up Google Apps Script
+## Deploy the inventory app
 
-1. Visit [script.google.com](https://script.google.com), create a new project, and name it **EAHS Lab Checkout API**.
-2. Replace `Code.gs` with the contents of `apps-script/Code.gs`.
-3. Open **Project Settings**, enable **Show appsscript.json manifest file**, then replace it with `apps-script/appsscript.json`.
-4. Confirm the project time zone is **America/Los_Angeles**.
-5. Click **Deploy → New deployment → Web app**.
-6. Choose **Execute as: Me** and restrict access to your school organization if that choice is available. Do not publish an owner-executed calendar writer anonymously.
-7. Authorize Calendar access and copy the deployment URL ending in `/exec`.
-8. Paste that URL into `apiUrl` in `config.js`.
+1. Open the **Everett Alvarez Science Department Inventory** Google Sheet.
+2. Choose **Extensions → Apps Script**.
+3. Replace `Code.gs` with `inventory-app/Code.gs`.
+4. Add a Script file named `Catalog` and paste `inventory-app/Catalog.gs`.
+5. Add an HTML file named `Index` and paste `inventory-app/Index.html`.
+6. Save, select `getData`, click **Run**, and approve access.
+7. Choose **Deploy → New deployment → Web app**. Set **Execute as: Me** and restrict access to the school organization.
+8. Copy the deployed URL ending in `/exec`.
+9. In this GitHub repository, edit `site-config.js` and paste the URL:
 
-The Google account that deploys the script must have permission to create events on the supplied lab calendar.
+```js
+window.EAHS_SITE_CONFIG = {
+  inventoryAppUrl: "https://script.google.com/a/macros/salinasuhsd.org/s/DEPLOYMENT_ID/exec"
+};
+```
 
-## 2. Add minimum-day dates
+10. Commit the change. GitHub Actions will republish the department site.
 
-The bell schedule provides minimum-day period times but the calendar-specific minimum-day dates should be confirmed. Add each date in `YYYY-MM-DD` format to both:
+The inventory backend uses `ALLOWALL` for framing so the organization-restricted Apps Script can appear inside the GitHub page. Google authentication and the deployment's access restriction still control who can use it. The inventory page also includes an **Open full screen** option.
 
-- `minimumDays` in `config.js`
-- `MINIMUM_DAYS` in `apps-script/Code.gs`
+## Publish on GitHub Pages
 
-## 3. Publish on GitHub Pages
+Upload the contents of this folder to the repository root. Keep the existing GitHub Pages Actions workflow. After committing, the repository's Pages URL becomes the department homepage; the lab and inventory tools are linked from it.
 
-1. Create a GitHub repository and upload everything in this folder.
-2. In the repository, open **Settings → Pages**.
-3. Under **Build and deployment**, choose **Deploy from a branch**, then select `main` and `/ (root)`.
-4. Save. GitHub will display the public site URL after deployment.
+## Inventory data rules
 
-## Testing checklist
-
-- Open a current week and confirm regular, Wednesday, and Thursday periods.
-- Make one priority-course reservation more than 14 days ahead.
-- Confirm a non-priority course is blocked more than 14 days ahead.
-- Confirm the event appears on the shared calendar and the teacher receives an invitation.
-- In a second browser, verify the newly reserved slot is marked booked.
-
-## Bell schedule source
-
-[EAHS 2026–27 Bell Schedule](https://resources.finalsite.net/images/v1785859850/salinasuhsdorg/datex095hkn4gaalhypa/EAHS26-27BellSchedule.pdf)
+The Google Sheet remains the permanent inventory database. Do not use the standalone `inventory-app/Index.html` file as the live inventory because it opens a local demonstration when it is outside Apps Script.

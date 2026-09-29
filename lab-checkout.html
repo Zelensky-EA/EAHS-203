@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102a43">
+  <title>203 Laboratory Checkout</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="department-nav" aria-label="Science department navigation">
+    <a class="department-brand" href="index.html">EAHS Science Department</a>
+    <div>
+      <a class="active" href="lab-checkout.html">203 Lab Checkout</a>
+      <a href="inventory.html">Department Inventory</a>
+    </div>
+  </nav>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">Everett Alvarez High School</p>
+      <h1>203 Laboratory Checkout</h1>
+      <p class="subtitle">Reserve Laboratory 203 by class period.</p>
+    </div>
+    <a class="calendar-link" href="https://calendar.google.com/calendar/u/0?cid=Y183YWVmNGNjNzczZDQxNGQwYjQ0N2MxYTdhZDdlNmM5OTEwYzhiMTI3ZWY3ZDIyY2MyNDBiNDcyZDY5M2Y3ZDM1QGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20" target="_blank" rel="noopener">Open Google Calendar ↗</a>
+  </header>
+
+  <main>
+    <section class="notice" aria-label="Reservation window">
+      <span class="notice-icon">◷</span>
+      <div><strong>Reservation window</strong><br><span>Reservations may be made up to 14 days ahead of time.</span></div>
+    </section>
+
+    <section class="toolbar" aria-label="Calendar controls">
+      <div class="week-controls">
+        <button id="prevWeek" class="icon-button" aria-label="Previous week">‹</button>
+        <button id="today" class="text-button">Today</button>
+        <button id="nextWeek" class="icon-button" aria-label="Next week">›</button>
+      </div>
+      <div>
+        <p class="eyebrow">Week of</p>
+        <h2 id="weekTitle">Loading…</h2>
+      </div>
+      <div class="legend"><span><i class="dot available"></i>Available</span><span><i class="dot booked"></i>Booked</span></div>
+    </section>
+
+    <div id="setupWarning" class="setup-warning" hidden>
+      Preview mode is active. Add your Apps Script deployment URL in <code>config.js</code> to load live reservations and enable booking.
+    </div>
+
+    <section id="calendarGrid" class="calendar-grid" aria-live="polite"></section>
+    <p id="status" class="status" role="status"></p>
+  </main>
+
+  <dialog id="bookingDialog">
+    <form id="bookingForm" method="dialog">
+      <div class="dialog-heading">
+        <div><p class="eyebrow">New reservation</p><h2 id="slotHeading">Reserve lab</h2></div>
+        <button type="button" id="closeDialog" class="close-button" aria-label="Close">×</button>
+      </div>
+      <input type="hidden" id="bookingDate" name="date">
+      <input type="hidden" id="bookingSlot" name="slotId">
+      <label>Teacher name<input name="teacherName" autocomplete="name" required maxlength="80"></label>
+      <label>School email<input name="teacherEmail" type="email" autocomplete="email" required maxlength="120" placeholder="name@salinasuhsd.org"></label>
+      <label>Course<select name="course" required>
+        <option value="">Select a course</option>
+        <option>AP Chemistry</option><option>AP Biology</option><option>Anatomy &amp; Physiology</option>
+        <option>Chemistry</option><option>Biology</option><option>Physics</option><option>Environmental Science</option><option>Other</option>
+      </select></label>
+      <label>Activity / lab<input name="activity" required maxlength="100" placeholder="e.g., Titration lab"></label>
+      <label class="checkbox"><input name="needsPrep" type="checkbox"> Lab setup or prep support is needed</label>
+      <label>Notes <span class="optional">optional</span><textarea name="notes" rows="3" maxlength="500" placeholder="Equipment, safety, or setup details"></textarea></label>
+      <p class="form-message" id="formMessage"></p>
+      <div class="dialog-actions"><button type="button" id="cancelBooking" class="secondary">Cancel</button><button type="submit" id="submitBooking" class="primary">Reserve lab</button></div>
+    </form>
+  </dialog>
+
+  <script src="config.js?v=3"></script>
+  <script src="app.js"></script>
+</body>
+</html>

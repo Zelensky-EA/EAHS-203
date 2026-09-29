@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b2942">
+  <title>EAHS Science Department Inventory</title>
+  <link rel="stylesheet" href="portal.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">EAHS Science Department</div>
+    <nav aria-label="Science department navigation">
+      <a href="index.html">Home</a>
+      <a href="lab-checkout.html">203 Lab Checkout</a>
+      <a class="active" href="inventory.html">Department Inventory</a>
+    </nav>
+  </header>
+  <main class="frame-shell" id="inventoryMount">
+    <section class="frame-message">
+      <p class="eyebrow">Department tool</p>
+      <h1>Science Department Inventory</h1>
+      <p>Deploy the inventory Apps Script included with this website, then paste its <code>/exec</code> address into <code>site-config.js</code>. The working inventory will appear here.</p>
+    </section>
+  </main>
+  <script src="site-config.js?v=1"></script>
+  <script>
+    const url = window.EAHS_SITE_CONFIG && window.EAHS_SITE_CONFIG.inventoryAppUrl;
+    if (url) {
+      const mount = document.querySelector('#inventoryMount');
+      mount.innerHTML = '';
+      const frame = document.createElement('iframe');
+      frame.className = 'inventory-frame';
+      frame.title = 'EAHS Science Department Inventory';
+      frame.src = url;
+      frame.setAttribute('allow', 'clipboard-write');
+      mount.append(frame);
+      const open = document.createElement('a');
+      open.className = 'open-external';
+      open.href = url;
+      open.target = '_blank';
+      open.rel = 'noopener';
+      open.textContent = 'Open full screen ↗';
+      document.body.append(open);
+    }
+  </script>
+</body>
+</html>
